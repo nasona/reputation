@@ -42,13 +42,13 @@ public class MainView extends JFrame{
                 if (! deck.isEmpty()){
                     Card card1 = MainView.this.model.getPlayer1Card();
                     Card card2 = MainView.this.model.getPlayer2Card();
+                    statusField.setText(model.toString());
                     MainView.this.model.step();
                     card1.turn();
                     card2.turn();
-                    statusField.setText(model.toString());
                     panel1.setCard(card1);
                     panel2.setCard(card2);
-                    //model.winner();
+                    model.winner();
                 }
             }});
         
