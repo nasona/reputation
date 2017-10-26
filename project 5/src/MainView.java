@@ -4,16 +4,23 @@ import java.awt.event.*;
 
 /**
  * The main window for dealing from a deck of cards.
+ * 
+ * @author nasona
+ * @author lefkowitza
+ * @author delosreyesa
+ * @author greenleafm
  * @author lambertk
+ * @version 1.1
  *
  */
 public class MainView extends JFrame{
 
     private Deck deck;
-    private WarGame model;
+    protected WarGame model = new WarGame();
 
     public MainView(Deck deck){
-        this.deck = deck;
+        this.deck = this.model.getDeck();
+        model.dealAll();
         this.setTitle("The Game of War");
         
         JLabel player1Label = new JLabel("Player 1");
@@ -21,10 +28,11 @@ public class MainView extends JFrame{
         JLabel player2Label = new JLabel("Player 2");
         
         CardPanel panel1 = new CardPanel();
-        JTextField statusField = new JTextField(1);
+        
+        JTextArea statusField = new JTextArea();
         statusField.setEditable(false);
-        statusField.setHorizontalAlignment(JTextField.CENTER);
         statusField.setText(model.toString());
+        
         CardPanel panel2 = new CardPanel();
         JButton moveButton = new JButton("Move");
         JButton newButton = new JButton("New Game");
@@ -32,21 +40,25 @@ public class MainView extends JFrame{
         moveButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 if (! deck.isEmpty()){
-                    Card card = deck.deal();
-                    card.turn();
-                    panel1.setCard(card);
-                    panel2.setCard(card);
+                    Card card1 = MainView.this.model.getPlayer1Card();
+                    Card card2 = MainView.this.model.getPlayer2Card();
+                    MainView.this.model.step();
+                    card1.turn();
+                    card2.turn();
+                    statusField.setText(model.toString());
+                    panel1.setCard(card1);
+                    panel2.setCard(card2);
+                    //model.winner();
                 }
             }});
         
         newButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                if (! deck.isEmpty()){
-                    Card card = deck.deal();
-                    card.turn();
-                    panel1.setCard(card);
-                    panel2.setCard(card);
-                }
+            	MainView.this.model = new WarGame();
+            	panel1.setCard(null);
+            	panel2.setCard(null);
+            	statusField.setText("");
+                	//not this
             }});
         
         Container c = getContentPane();
@@ -57,5 +69,7 @@ public class MainView extends JFrame{
         c.add(panel1);
         c.add(statusField);
         c.add(panel2);
+        c.add(moveButton);
+        c.add(newButton);
     }
 }

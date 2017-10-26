@@ -40,10 +40,10 @@ public class Deck{
      * @throws IllegalStateException if the deck is empty
      */
     public Card deal(){
-	if (isEmpty())
-	    throw new IllegalStateException("Deck is empty");
-	else
-	    return deck.remove(deck.size() - 1);
+    	if (isEmpty())
+    		throw new IllegalStateException("Deck is empty");
+    	else
+    		return deck.remove(deck.size() - 1);
     }
 
     /**
